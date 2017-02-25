@@ -212,11 +212,13 @@ export function updateFeatures(mapId, nextFeatures = []): string {
 
   // Check if existing features need to be removed
   // and removes them, will skip those that exist in the incoming features
-  data.forEach(((feature) => {
-    if (!find(nextFeatures, { id: feature.getId() })) {
-      data.remove(feature);
-    }
-  }));
+  if (data && data.length) {
+    data.forEach(((feature) => {
+      if (!find(nextFeatures, { id: feature.getId() })) {
+        data.remove(feature);
+      }
+    }));
+  }
 
   // Add new features, only those that need to be updated will be
   forEach(nextFeatures, (feature) => {

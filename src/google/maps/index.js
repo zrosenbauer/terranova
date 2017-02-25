@@ -9,6 +9,8 @@ let maps = null;
 
 if (typeof window !== 'undefined' && window.google && window.google.maps) {
   maps = window.google.maps;
-};
+} else {
+  maps = {};
+}
 
 export default maps;
