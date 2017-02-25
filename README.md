@@ -1,5 +1,8 @@
 # GoogleMaps Documentation
 
+[![codecov](https://codecov.io/gh/zrosenbauer/terranova/branch/master/graph/badge.svg?token=RcFCm9gczi)](https://codecov.io/gh/zrosenbauer/terranova)
+
+
 ## The Data Flow
 
 ### Initial
