@@ -3,9 +3,9 @@ import findIndex from 'lodash/findIndex';
 import pullAt from 'lodash/pullAt';
 
 import {
-  mapExists,
+  terraExists,
   getTerraById,
-  getDataByMapId,
+  getDataById,
 } from './terra';
 import {
   getFeatureTypesByMapId,
@@ -39,7 +39,7 @@ function getSetStyleIndex(mapId, setStyle) {
  * @param {Function} setStyle
  */
 export function addStylesModifier(mapId, setStyle) {
-  if (mapExists(mapId)) {
+  if (terraExists(mapId)) {
     const index = getSetStyleIndex(mapId, setStyle);
 
     if (index !== -1) {
@@ -57,7 +57,7 @@ export function addStylesModifier(mapId, setStyle) {
  * @param {Function} setStyle
  */
 export function removeStylesModifier(mapId, setStyle) {
-  if (mapExists(mapId)) {
+  if (terraExists(mapId)) {
     const index = getSetStyleIndex(mapId, setStyle);
 
     if (index !== -1) {
@@ -72,7 +72,7 @@ export function removeStylesModifier(mapId, setStyle) {
  * @returns {Array<Function>}
  */
 export function getStylesModifiers(mapId) {
-  if (!mapExists(mapId)) {
+  if (!terraExists(mapId)) {
     return [];
   }
 
@@ -85,7 +85,7 @@ export function getStylesModifiers(mapId) {
  * @returns {void}
  */
 export function clearStylesModifiers(mapId) {
-  if (mapExists(mapId)) {
+  if (terraExists(mapId)) {
     getTerraById(mapId).stylesModifiers = [];
   }
 }
@@ -98,7 +98,7 @@ export function clearStylesModifiers(mapId) {
 export function addStyles(mapId) {
   const featureStyles = getFeatureTypesByMapId(mapId);
 
-  getDataByMapId(mapId).setStyle((feature) => {
+  getDataById(mapId).setStyle((feature) => {
     const type = getFeatureTypeByName(featureStyles, getFeatureType(feature));
 
     // Allow custom overrides,

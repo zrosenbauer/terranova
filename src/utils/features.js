@@ -13,8 +13,8 @@ import LatLngBounds from '../google/maps/LatLngBounds';
 import LatLng from '../google/maps/LatLng';
 
 import {
-  mapExists,
-  getDataByMapId,
+  terraExists,
+  getDataById,
   getTerraById,
 } from './terra';
 import {
@@ -62,7 +62,7 @@ export const FEATURE_EVENTS = {
  */
 export function handleFeatureEvents(mapId: string): void {
   forEach(FEATURE_EVENTS, (eventType) => {
-    getDataByMapId(mapId).addListener(eventType, (e) => {
+    getDataById(mapId).addListener(eventType, (e) => {
       const { feature } = e;
       const typeName = getFeatureType(feature);
       const type = getFeatureTypeByName(getFeatureTypesByMapId(mapId), typeName);
@@ -81,7 +81,7 @@ export function handleFeatureEvents(mapId: string): void {
  * @returns {Object|null}
  */
 export function getFeatureTypesByMapId(id: string): ?Object {
-  if (!mapExists(id)) {
+  if (!terraExists(id)) {
     return null;
   }
 
@@ -120,11 +120,11 @@ export function getFeatureType(feature): string {
  * @returns {Data.Feature}
  */
 export function getFeatureByMapId(mapId, featureId): object {
-  if (!mapExists(mapId)) {
+  if (!terraExists(mapId)) {
     return null;
   }
 
-  return getDataByMapId(mapId).getFeatureById(featureId);
+  return getDataById(mapId).getFeatureById(featureId);
 }
 
 
@@ -208,7 +208,7 @@ function transformToValidFeature(feature: Object, mapId: string): any {
  * @returns {void}
  */
 export function updateFeatures(mapId, nextFeatures = []): string {
-  const data = getDataByMapId(mapId);
+  const data = getDataById(mapId);
 
   // Check if existing features need to be removed
   // and removes them, will skip those that exist in the incoming features
@@ -238,7 +238,7 @@ export function updateFeatures(mapId, nextFeatures = []): string {
 export function addFeatures(mapId, features = []) {
   if (features.length) {
     forEach(features, (feature) => {
-      getDataByMapId(mapId).add(transformToValidFeature(feature, mapId));
+      getDataById(mapId).add(transformToValidFeature(feature, mapId));
     });
     addStyles(mapId);
     handleFeatureEvents(mapId);

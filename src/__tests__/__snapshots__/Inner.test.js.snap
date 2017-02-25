@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Inner matches snapshot 1`] = `
+<div
+  id="id"
+  style={
+    Object {
+      "bottom": "0",
+      "left": "0",
+      "position": "absolute",
+      "right": "0",
+      "top": "0",
+    }
+  }
+/>
+`;

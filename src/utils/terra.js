@@ -75,7 +75,7 @@ const terra = {};
  * @param {String} id
  * @returns {Boolean}
  */
-export function mapExists(id) {
+export function terraExists(id) {
   return Boolean(terra[id]);
 }
 
@@ -87,11 +87,11 @@ export function mapExists(id) {
  * @returns {Maps|null}
  */
 export function getTerraById(id) {
-  if (!mapExists(id)) {
+  if (!terraExists(id)) {
     return null;
   }
 
-  return terra[id] || null;
+  return terra[id];
 }
 
 /**
@@ -99,23 +99,23 @@ export function getTerraById(id) {
  * @returns {Maps|null}
  */
 export function getMapById(id) {
-  if (!mapExists(id)) {
+  if (!terraExists(id)) {
     return null;
   }
 
-  return terra[id].map || null;
+  return terra[id].map;
 }
 
 /**
  * @param {String} id
  * @returns {Data|null}
  */
-export function getDataByMapId(id) {
-  if (!mapExists(id)) {
+export function getDataById(id) {
+  if (!terraExists(id)) {
     return null;
   }
 
-  return terra[id].map.data || null;
+  return terra[id].map.data;
 }
 
 // General
@@ -129,7 +129,7 @@ export function getDataByMapId(id) {
  * @param {Object} featureTypes
  * @param {Array<Function>} stylesModifiers
  */
-export function createMap(id, options = {}, featureTypes = {}, stylesModifiers = []) {
+export function createTerra(id, options = {}, featureTypes = {}, stylesModifiers = []) {
   if (terra[id]) {
     throw new Error(`Map with id of ${id}, already exists!`);
   }
@@ -151,7 +151,7 @@ export function createMap(id, options = {}, featureTypes = {}, stylesModifiers =
  * in our terra object.
  * @param {String} id
  */
-export function destroyMap(id) {
+export function destroyTerra(id) {
   if (terra[id]) {
     terra[id] = null;
   }
@@ -159,9 +159,9 @@ export function destroyMap(id) {
 
 // Public Api
 export default {
-  mapExists,
+  terraExists,
   getMapById,
-  getDataByMapId,
-  createMap,
-  destroyMap,
+  getDataById,
+  createTerra,
+  destroyTerra,
 };

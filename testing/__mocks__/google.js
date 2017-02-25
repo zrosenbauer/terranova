@@ -18,28 +18,47 @@ export default {
       };
     },
     OverlayView() {
-      return {};
+      return {
+        typeChecker: 'OverlayView',
+      };
     },
     InfoWindow() {
-      return {};
+      return {
+        typeChecker: 'InfoWindow',
+      };
     },
     Marker() {
-      return {};
+      return {
+        typeChecker: 'Marker',
+      };
     },
     MarkerImage() {
-      return {};
+      return {
+        typeChecker: 'MarkerImage',
+      };
     },
-    Map() {
-      return {};
+    Map(options) {
+      return {
+        options,
+        data: {},
+        map: {},
+        typeChecker: 'Map',
+      };
     },
     Point() {
-      return {};
+      return {
+        typeChecker: 'Map',
+      };
     },
     Size() {
-      return {};
+      return {
+        typeChecker: 'Map',
+      };
     },
     Data() {
-      return {};
+      return {
+        typeChecker: 'Map',
+      };
     }
   }
 };

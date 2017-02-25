@@ -8,7 +8,7 @@ import InfoWindowComponent from './InfoWindow';
 
 // Terra
 export const getMapById = terra.getMapById;
-export const getDataByMapId = terra.getDataByMapId;
+export const getDataById = terra.getDataById;
 
 // Calculations
 export const latLngToPixel = calc.latLngToPixel;

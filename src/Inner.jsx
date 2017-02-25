@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
 import {
-  createMap,
-  destroyMap,
+  createTerra,
+  destroyTerra,
 } from './utils/terra';
 import {
   addFeatures,
@@ -80,7 +80,7 @@ export default class Inner extends Component {
     } = this.props;
 
     // creates the map
-    createMap(id, options, featureTypes, setStyles);
+    createTerra(id, options, featureTypes, setStyles);
 
     // add all feature to the map.data, update styles etc.
     addFeatures(id, features);
@@ -102,7 +102,7 @@ export default class Inner extends Component {
   }
 
   componentWillUnmount() {
-    destroyMap(this.props.id);
+    destroyTerra(this.props.id);
   }
 
   render() {
