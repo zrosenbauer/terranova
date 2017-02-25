@@ -13,8 +13,8 @@ import LatLngBounds from '../google/maps/LatLngBounds';
 import LatLng from '../google/maps/LatLng';
 
 import {
-  mapExists,
-  getDataByMapId,
+  terraExists,
+  getDataById,
   getTerraById,
 } from './terra';
 import {
@@ -62,16 +62,20 @@ export const FEATURE_EVENTS = {
  */
 export function handleFeatureEvents(mapId: string): void {
   forEach(FEATURE_EVENTS, (eventType) => {
-    getDataByMapId(mapId).addListener(eventType, (e) => {
+    getDataById(mapId).addListener(eventType, (e) => {
       const { feature } = e;
       const typeName = getFeatureType(feature);
       const type = getFeatureTypeByName(getFeatureTypesByMapId(mapId), typeName);
 
-      // Update the feature State
-      setFeatureState(feature, type.handleEvents(feature, eventType));
+      if (type) {
+        // Update the feature State
+        setFeatureState(feature, type.handleEvents(feature, eventType));
+      }
 
-      // Dispatch Event to map, public API for interfacing with events on DataLayer
-      dispatch(mapId, ens(mapId, eventType, typeName), feature);
+      if (typeName) {
+        // Dispatch Event to map, public API for interfacing with events on DataLayer
+        dispatch(mapId, ens(mapId, eventType, typeName), feature);
+      }
     });
   });
 }
@@ -81,7 +85,7 @@ export function handleFeatureEvents(mapId: string): void {
  * @returns {Object|null}
  */
 export function getFeatureTypesByMapId(id: string): ?Object {
-  if (!mapExists(id)) {
+  if (!terraExists(id)) {
     return null;
   }
 
@@ -93,7 +97,7 @@ export function getFeatureTypesByMapId(id: string): ?Object {
  * @param {String} name
  * @returns {Object|null}
  */
-export function getFeatureTypeByName(featuresTypes: Object, name: string): Object {
+export function getFeatureTypeByName(featuresTypes: ?Object, name: string): ?Object {
   if (!featuresTypes) {
     return null;
   }
@@ -106,7 +110,7 @@ export function getFeatureTypeByName(featuresTypes: Object, name: string): Objec
  * @param {String} name
  * @returns {String}
  */
-export function getFeatureType(feature): string {
+export function getFeatureType(feature: Object): string {
   if (!feature) {
     return '';
   }
@@ -119,12 +123,12 @@ export function getFeatureType(feature): string {
  * @param {String} featureId
  * @returns {Data.Feature}
  */
-export function getFeatureByMapId(mapId, featureId): object {
-  if (!mapExists(mapId)) {
+export function getFeatureByMapId(mapId: String, featureId: String): ?Object {
+  if (!terraExists(mapId)) {
     return null;
   }
 
-  return getDataByMapId(mapId).getFeatureById(featureId);
+  return getDataById(mapId).getFeatureById(featureId);
 }
 
 
@@ -133,7 +137,7 @@ export function getFeatureByMapId(mapId, featureId): object {
  * @param {Data.Feature} feature
  * @returns {Object}
  */
-export function getFeatureState(feature): object {
+export function getFeatureState(feature: Object): Object {
   return feature.getProperty(stateKey);
 }
 
@@ -143,7 +147,7 @@ export function getFeatureState(feature): object {
  * @param {Object} nextState
  * @returns {void}
  */
-export function setFeatureState(feature, nextState): void {
+export function setFeatureState(feature: Object, nextState: Object): void {
   if (!isEqual(getFeatureState(feature), nextState)) {
     feature.setProperty(stateKey, {
       ...getFeatureState(feature),
@@ -158,7 +162,7 @@ export function setFeatureState(feature, nextState): void {
  * @param {String} type
  * @returns {void}
  */
-export function setFeatureType(feature, type): void {
+export function setFeatureType(feature: Object, type: string): void {
   if (getFeatureType(feature) === type) {
     feature.setProperty(typeKey, type);
   }
@@ -182,7 +186,7 @@ function transformToValidFeature(feature: Object, mapId: string): any {
       properties: {
         ...properties,
         [typeKey]: type,
-        [stateKey]: featureType.initialState,
+        [stateKey]: featureType ? featureType.initialState : {},
       },
       geometry: new Data.Polygon(geometry),
     });
@@ -193,7 +197,7 @@ function transformToValidFeature(feature: Object, mapId: string): any {
     properties: {
       ...properties,
       [typeKey]: type,
-      [stateKey]: featureType.initialState,
+      [stateKey]: featureType ? featureType.initialState : {},
     },
     geometry,
   });
@@ -207,8 +211,8 @@ function transformToValidFeature(feature: Object, mapId: string): any {
  * @param {Array} nextFeatures
  * @returns {void}
  */
-export function updateFeatures(mapId, nextFeatures = []): string {
-  const data = getDataByMapId(mapId);
+export function updateFeatures(mapId: string, nextFeatures: Array<Object> = []): void {
+  const data = getDataById(mapId);
 
   // Check if existing features need to be removed
   // and removes them, will skip those that exist in the incoming features
@@ -235,10 +239,10 @@ export function updateFeatures(mapId, nextFeatures = []): string {
  * @param {Array} features
  * @returns {void}
  */
-export function addFeatures(mapId, features = []) {
+export function addFeatures(mapId: string, features: Array<Object> = []) {
   if (features.length) {
     forEach(features, (feature) => {
-      getDataByMapId(mapId).add(transformToValidFeature(feature, mapId));
+      getDataById(mapId).add(transformToValidFeature(feature, mapId));
     });
     addStyles(mapId);
     handleFeatureEvents(mapId);
@@ -251,7 +255,7 @@ export function addFeatures(mapId, features = []) {
  * @param {Data.Feature} feature
  * @returns {Object}
  */
-export function getFeatureProperties(feature) {
+export function getFeatureProperties(feature: Object) {
   const result = {};
 
   if (!feature) {
@@ -273,7 +277,7 @@ export function getFeatureProperties(feature) {
  * @param {String} featureType
  * @returns {window.google.maps.LatLngBounds}
  */
-export function getFeatureBounds(features, featureType) {
+export function getFeatureBounds(features: Array<Object> = [], featureType: string) {
   const mapBounds = new LatLngBounds();
 
   forEach(features, ({ properties, geometry }) => {

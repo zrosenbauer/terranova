@@ -48,12 +48,7 @@ class ExampleMap extends PureComponent {
 
   static propTypes = {
     features: PropTypes.array.isRequired,
-    options: PropTypes.shape({
-      center: PropTypes.shape({
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired,
-      }).isRequired
-    }).isRequired
+    options: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
