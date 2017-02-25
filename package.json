@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run build",
-    "test": "jest & codecov -t 78ffb9e9-af85-47ed-83fa-a6c0c61acab1",
+    "test": "jest & codecov",
+    "test:run": "jest",
+    "test:watch": "jest --watch",
     "build": "babel src --loose --out-dir lib",
     "watch": "babel src --watch --out-dir lib"
   },
