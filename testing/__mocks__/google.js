@@ -40,7 +40,9 @@ export default {
     Map(options) {
       return {
         options,
-        data: {},
+        data: {
+          getFeatureById: (val) => val,
+        },
         map: {},
         typeChecker: 'Map',
       };
