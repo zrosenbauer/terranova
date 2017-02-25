@@ -31,7 +31,24 @@ describe('Outer', () => {
   it('matches snapshot', () => {
     expect(shallowToJson(wrapper)).toMatchSnapshot();
   });
-  //
-  // it('sets styles from props', () => {
-  // });
+
+  it('sets styles from props', () => {
+    const style = {
+      position: 'relative',
+      height: defaultProps.height,
+      width: defaultProps.width,
+    };
+    expect(wrapper.find('.terra-outer').prop('style')).toEqual(style);
+
+    const nextProps = {
+      height: '0px',
+      width: '0px',
+    };
+    wrapper.setProps(nextProps);
+    expect(wrapper.find('.terra-outer').prop('style')).toEqual({
+      ...style,
+      height: nextProps.height,
+      width: nextProps.width,
+    });
+  });
 });

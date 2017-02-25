@@ -1,7 +1,4 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PropTypes } from 'react';
 
 import Inner from './Inner';
 
@@ -22,34 +19,27 @@ function getOuterStyles(height, width) {
  * MapsWrapper
  * @modules Terra/Outer
  */
-export default class Outer extends PureComponent {
+const Outer = ({
+  children,
+  height,
+  width,
+  ...rest
+}) => (
+  <div
+    className="terra-outer"
+    style={getOuterStyles(height, width)}
+  >
+    <Inner {...rest} />
+    {children}
+  </div>
+);
 
-  static displayName = 'Terra/Outer';
+Outer.displayName = 'Terra/Outer';
 
-  static propTypes = {
-    children: PropTypes.node,
-    height: PropTypes.string.isRequired,
-    width: PropTypes.string.isRequired,
-  };
+Outer.propTypes = {
+  children: PropTypes.node,
+  height: PropTypes.string.isRequired,
+  width: PropTypes.string.isRequired,
+};
 
-  state = {};
-
-  render() {
-    const {
-      children,
-      height,
-      width,
-      ...rest
-    } = this.props;
-
-    return (
-      <div
-        className="terra-outer"
-        style={getOuterStyles(height, width)}
-      >
-        <Inner {...rest} />
-        {children}
-      </div>
-    );
-  }
-}
+export default Outer;

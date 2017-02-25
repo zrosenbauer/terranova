@@ -30,14 +30,44 @@ export default class Inner extends Component {
 
   static propTypes = {
     id: PropTypes.string.isRequired,
-    options: PropTypes.object,
-    features: PropTypes.array,
-    featureTypes: PropTypes.object,
+    options: PropTypes.shape({
+      center: PropTypes.shape({
+        lat: PropTypes.number.isRequired,
+        lng: PropTypes.number.isRequired,
+      }).isRequired
+    }).isRequired,
+    features: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      properties: PropTypes.object,
+      geometry: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.shape({
+          lat: PropTypes.number.isRequired,
+          lng: PropTypes.number.isRequired,
+        }),
+      ]).isRequired,
+    })),
+    featureTypes: PropTypes.shape({
+      name: PropTypes.string,
+      initialState: PropTypes.object,
+      handleEvents: PropTypes.func,
+      getStyles: PropTypes.func,
+    }),
     setStyles: PropTypes.array,
   };
 
   static defaultProps = {
-    options: null,
+    // Default option, places us in chicago
+    // cause without this the map will error out
+    // without any kind of sane error messaging
+    options: {
+      zoom: 13,
+      center: {
+        lat: 41.8781,
+        lng: -87.6298
+      }
+    },
   };
 
   componentDidMount() {
