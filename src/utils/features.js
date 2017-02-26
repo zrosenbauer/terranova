@@ -120,7 +120,7 @@ export function getFeatureTypeByName(featuresTypes: ?Object, name: string): ?Obj
  * @param {String} featureId
  * @returns {Data.Feature}
  */
-export function getFeatureByMapId(mapId: String, featureId: String): ?Object {
+export function getFeatureByMapId(mapId: string, featureId: string): ?Object {
   if (!terraExists(mapId)) {
     return null;
   }

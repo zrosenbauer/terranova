@@ -30,7 +30,12 @@ import {
  * @private
  */
 function getSetStyleIndex(mapId: string, setStyle: Function): number {
-  return findIndex(getTerraById(mapId).stylesModifiers, (cb) => cb === setStyle);
+  const terra = getTerraById(mapId);
+  if (terra) {
+    return findIndex(getTerraById(mapId).stylesModifiers, (cb) => cb === setStyle);
+  }
+
+  return -1;
 }
 
 /**

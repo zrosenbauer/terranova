@@ -1,3 +1,5 @@
+/* @flow */
+
 // General Module
 // ------------------------------------
 // Another case of poor naming, but this
@@ -9,7 +11,7 @@
  * Returns true on client,
  * @returns {Boolean}
  */
-export function isClient() {
+export function isClient(): boolean {
   return typeof window !== 'undefined';
 }
 
@@ -17,7 +19,7 @@ export function isClient() {
  * Returns true on server,
  * @returns {Boolean}
  */
-export function isServer() {
+export function isServer(): boolean {
   return typeof module === 'object' && typeof module.exports === 'object';
 }
 
