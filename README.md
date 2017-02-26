@@ -21,10 +21,10 @@ $ yarn add terranova
 ```
 
 ## Goals
-1. Interface - Provide singular interface for features on the map
-2. Native - Allow complete usage of the native Google Maps API, while still being able to use react
-3. Features - Allow for configurable features to allow quick addition, substraction and feature iteration
-4. Performance - Use the built in DataLayer to create highly performant map interactions and updates 
+1. Interface - Provide a singular interface for interacting with features on the map
+2. Native - Promote usage of the native Google Maps API over some abstraction layer
+3. Configurable Features - Allow for configurable features to allow for quick UX iteration
+4. Performance - Use the built in DataLayer to create highly performant map interactions
 
 ## Documentation 
 * [Home](https://github.com/zrosenbauer/terranova/wiki/Documentation)
