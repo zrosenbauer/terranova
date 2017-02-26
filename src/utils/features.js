@@ -12,6 +12,7 @@ import Data from '../google/maps/Data';
 import LatLngBounds from '../google/maps/LatLngBounds';
 import LatLng from '../google/maps/LatLng';
 
+import { isServer } from './general';
 import {
   terraExists,
   getDataById,
@@ -55,120 +56,6 @@ export const FEATURE_EVENTS = {
 };
 
 /**
- * Handle feature events by updating state and by
- * also dispatching a Map event
- * @param {String} mapId
- * @returns {void}
- */
-export function handleFeatureEvents(mapId: string): void {
-  forEach(FEATURE_EVENTS, (eventType) => {
-    getDataById(mapId).addListener(eventType, (e) => {
-      const { feature } = e;
-      const typeName = getFeatureType(feature);
-      const type = getFeatureTypeByName(getFeatureTypesByMapId(mapId), typeName);
-
-      if (type) {
-        // Update the feature State
-        setFeatureState(feature, type.handleEvents(feature, eventType));
-      }
-
-      if (typeName) {
-        // Dispatch Event to map, public API for interfacing with events on DataLayer
-        dispatch(mapId, ens(mapId, eventType, typeName), feature);
-      }
-    });
-  });
-}
-
-/**
- * @param {String} id
- * @returns {Object|null}
- */
-export function getFeatureTypesByMapId(id: string): ?Object {
-  if (!terraExists(id)) {
-    return null;
-  }
-
-  return getTerraById(id).featureTypes || null;
-}
-
-/**
- * @param {Object} featuresTypes
- * @param {String} name
- * @returns {Object|null}
- */
-export function getFeatureTypeByName(featuresTypes: ?Object, name: string): ?Object {
-  if (!featuresTypes) {
-    return null;
-  }
-
-  return featuresTypes[findKey(featuresTypes, { name })] || null;
-}
-
-/**
- * @param {Object} featuresTypes
- * @param {String} name
- * @returns {String}
- */
-export function getFeatureType(feature: Object): string {
-  if (!feature) {
-    return '';
-  }
-
-  return feature.getProperty(typeKey);
-}
-
-/**
- * @param {String} mapId
- * @param {String} featureId
- * @returns {Data.Feature}
- */
-export function getFeatureByMapId(mapId: String, featureId: String): ?Object {
-  if (!terraExists(mapId)) {
-    return null;
-  }
-
-  return getDataById(mapId).getFeatureById(featureId);
-}
-
-
-/**
- * Gets a features state
- * @param {Data.Feature} feature
- * @returns {Object}
- */
-export function getFeatureState(feature: Object): Object {
-  return feature.getProperty(stateKey);
-}
-
-/**
- * Sets the state node on a feature
- * @param {Data.Feature} feature
- * @param {Object} nextState
- * @returns {void}
- */
-export function setFeatureState(feature: Object, nextState: Object): void {
-  if (!isEqual(getFeatureState(feature), nextState)) {
-    feature.setProperty(stateKey, {
-      ...getFeatureState(feature),
-      ...nextState,
-    });
-  }
-}
-
-/**
- * Sets the type on a feature
- * @param {Data.Feature} feature
- * @param {String} type
- * @returns {void}
- */
-export function setFeatureType(feature: Object, type: string): void {
-  if (getFeatureType(feature) === type) {
-    feature.setProperty(typeKey, type);
-  }
-}
-
-/**
  * Transforms a incoming feature to a valid Data.Feature,
  * as we have to transform to support polygons.
  * @param {Object} feature
@@ -204,6 +91,119 @@ function transformToValidFeature(feature: Object, mapId: string): any {
 }
 
 /**
+ * @param {String} id
+ * @returns {Object|null}
+ */
+export function getFeatureTypesByMapId(id: string): ?Object {
+  if (!terraExists(id)) {
+    return null;
+  }
+
+  return getTerraById(id).featureTypes || null;
+}
+
+/**
+ * @param {Object} featuresTypes
+ * @param {String} name
+ * @returns {Object|null}
+ */
+export function getFeatureTypeByName(featuresTypes: ?Object, name: string): ?Object {
+  if (!featuresTypes) {
+    return null;
+  }
+
+  return featuresTypes[findKey(featuresTypes, { name })] || null;
+}
+
+/**
+ * @param {String} mapId
+ * @param {String} featureId
+ * @returns {Data.Feature}
+ */
+export function getFeatureByMapId(mapId: String, featureId: String): ?Object {
+  if (!terraExists(mapId)) {
+    return null;
+  }
+
+  return getDataById(mapId).getFeatureById(featureId);
+}
+
+/**
+ * Gets the properties of a feature and returns them in an
+ * object format, it omits the state object.
+ * @param {Data.Feature} feature
+ * @returns {Object}
+ */
+export function getFeatureProperties(feature: Object) {
+  const result = {};
+
+  if (!feature) {
+    return result;
+  }
+
+  feature.forEachProperty((value, key) => {
+    if (![stateKey, typeKey].includes(key)) {
+      result[key] = value;
+    }
+  });
+
+  return result;
+}
+
+/**
+ * Gets a features state
+ * @param {Data.Feature} feature
+ * @returns {Object}
+ */
+export function getFeatureState(feature: Object): ?Object {
+  if (!feature) {
+    return null;
+  }
+
+  return feature.getProperty(stateKey);
+}
+
+/**
+ * Sets the state node on a feature
+ * @param {Data.Feature} feature
+ * @param {Object} nextState
+ * @returns {void}
+ */
+export function setFeatureState(feature: Object, nextState: Object): void {
+  if (!isEqual(getFeatureState(feature), nextState)) {
+    feature.setProperty(stateKey, {
+      ...getFeatureState(feature),
+      ...nextState,
+    });
+  }
+}
+
+/**
+ * @param {Object} featuresTypes
+ * @param {String} name
+ * @returns {String}
+ */
+export function getFeatureType(feature: Object): string {
+  if (!feature) {
+    return '';
+  }
+
+  return feature.getProperty(typeKey);
+}
+
+/**
+ * Sets the type on a feature
+ * @param {Data.Feature} feature
+ * @param {String} type
+ * @returns {void}
+ */
+export function setFeatureType(feature: Object, type: string): void {
+  if (!isEqual(getFeatureState(feature), type)) {
+    feature.setProperty(typeKey, type);
+  }
+}
+
+/**
  * Updates features, only removes the features that need to be,
  * and adds only what needs to be. Any existing features in the set
  * will not be updated.
@@ -217,11 +217,11 @@ export function updateFeatures(mapId: string, nextFeatures: Array<Object> = []):
   // Check if existing features need to be removed
   // and removes them, will skip those that exist in the incoming features
   if (data && data.length) {
-    data.forEach(((feature) => {
+    data.forEach((feature) => {
       if (!find(nextFeatures, { id: feature.getId() })) {
         data.remove(feature);
       }
-    }));
+    });
   }
 
   // Add new features, only those that need to be updated will be
@@ -250,47 +250,58 @@ export function addFeatures(mapId: string, features: Array<Object> = []) {
 }
 
 /**
- * Gets the properties of a feature and returns them in an
- * object format, it omits the state object.
- * @param {Data.Feature} feature
- * @returns {Object}
+ * Handle feature events by updating state and by
+ * also dispatching a Map event
+ * @param {String} mapId
+ * @returns {void}
  */
-export function getFeatureProperties(feature: Object) {
-  const result = {};
+export function handleFeatureEvents(mapId: string): void {
+  forEach(FEATURE_EVENTS, (eventType) => {
+    getDataById(mapId).addListener(eventType, (e) => {
+      const { feature } = e;
+      const typeName = getFeatureType(feature);
+      const type = getFeatureTypeByName(getFeatureTypesByMapId(mapId), typeName);
 
-  if (!feature) {
-    return result;
-  }
+      if (type) {
+        // Update the feature State
+        setFeatureState(feature, type.handleEvents(feature, eventType));
+      }
 
-  feature.forEachProperty((value, key) => {
-    if (![stateKey, typeKey].includes(key)) {
-      result[key] = value;
-    }
+      if (typeName) {
+        // Dispatch Event to map, public API for interfacing with events on DataLayer
+        dispatch(mapId, ens(mapId, eventType, typeName), feature);
+      }
+    });
   });
-
-  return result;
 }
 
-/**
- * Gets the map bounds based on an array of features
- * @param {Array<window.google.maps.Data.Feature>} features
- * @param {String} featureType
- * @returns {window.google.maps.LatLngBounds}
- */
-export function getFeatureBounds(features: Array<Object> = [], featureType: string) {
-  const mapBounds = new LatLngBounds();
+let unitTestingAddOns = {};
 
-  forEach(features, ({ properties, geometry }) => {
-    if (featureType === properties.type) {
-      if (isArray(geometry)) {
-        forEach(flatten(geometry), (geo) => {
-          mapBounds.extend(new LatLng(geo));
-        });
-      } else {
-        mapBounds.extend(new LatLng(geometry));
-      }
-    }
-  });
+// For usage in Unit Tests
+if (isServer() && global.__DEVELOPMENT_ENVIRONMENT__) {
+  unitTestingAddOns = {
+    typeKey,
+    stateKey,
+  };
+}
 
-  return mapBounds;
+// Public Api
+export default {
+  // --- NOT PUBLIC ---
+  ...unitTestingAddOns,
+  // --- NOT PUBLIC ---
+
+  // Accessors
+  getFeatureTypesByMapId,
+  getFeatureTypeByName,
+  getFeatureByMapId,
+  getFeatureProperties,
+
+  // State
+  getFeatureState,
+  setFeatureState,
+
+  // Type
+  getFeatureType,
+  setFeatureType,
 }

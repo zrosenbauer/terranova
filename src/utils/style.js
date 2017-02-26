@@ -33,8 +33,21 @@ function getSetStyleIndex(mapId, setStyle) {
 }
 
 /**
- * Adds a setStyle function to a that will override
- * default type based styling
+ * Gets the setStyles callbacks array
+ * @param {String} mapId
+ * @returns {Array<Function>}
+ */
+export function getStylesModifiers(mapId) {
+  if (!terraExists(mapId)) {
+    return [];
+  }
+
+  return getTerraById(mapId).stylesModifiers;
+}
+
+/**
+ * Adds a setStyle function that will
+ * override default type based styling
  * @param {String} mapId
  * @param {Function} setStyle
  */
@@ -42,10 +55,8 @@ export function addStylesModifier(mapId, setStyle) {
   if (terraExists(mapId)) {
     const index = getSetStyleIndex(mapId, setStyle);
 
-    if (index !== -1) {
-      getTerraById(mapId).stylesModifiers[index] = setStyle;
-    } else {
-      getTerraById(mapId).stylesModifiers = getTerraById(mapId).stylesModifiers.push(setStyle);
+    if (index === -1) {
+      getTerraById(mapId).stylesModifiers.push(setStyle);
     }
   }
 }
@@ -64,19 +75,6 @@ export function removeStylesModifier(mapId, setStyle) {
       pullAt(getStylesModifiers(mapId), index);
     }
   }
-}
-
-/**
- * Gets the setStyles callbacks array
- * @param {String} mapId
- * @returns {Array<Function>}
- */
-export function getStylesModifiers(mapId) {
-  if (!terraExists(mapId)) {
-    return [];
-  }
-
-  return getTerraById(mapId).stylesModifiers;
 }
 
 /**

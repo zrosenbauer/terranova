@@ -1,4 +1,4 @@
-export default {
+const google = {
   maps: {
     event: {
       trigger() {},
@@ -9,12 +9,6 @@ export default {
         longitude: parseFloat(lng),
         lat() { return this.latitude; },
         lng() { return this.longitude; }
-      };
-    },
-    LatLngBounds(ne, sw) {
-      return {
-        getSouthWest() { return sw; },
-        getNorthEast() { return ne; }
       };
     },
     OverlayView() {
@@ -38,19 +32,53 @@ export default {
       };
     },
     Map(options) {
+      const features = [];
       return {
         options,
         data: {
+          add: (feature) => {
+            features.push(feature);
+          },
           getFeatureById: (val) => val,
         },
         map: {},
         typeChecker: 'Map',
+        getBounds() {
+          return {
+            getNorthEast() {
+              return {
+                lat: 44.324,
+                lng: 88.4224
+              }
+            },
+            getSouthWest() {
+              return {
+                lat: 49.324,
+                lng: 90.4224
+              }
+            }
+          };
+        },
+        getProjection() {
+          return {
+            fromLatLngToPoint(val) {
+              return {
+                x: 10 * val.lat,
+                y: 10 * val.lng,
+              };
+            }
+          }
+        },
+        getZoom() {
+          return 10;
+        },
       };
     },
-    Point() {
-      return {
-        typeChecker: 'Map',
-      };
+    Point: class {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
     },
     Size() {
       return {
@@ -64,3 +92,27 @@ export default {
     }
   }
 };
+
+// Add Feature
+google.maps.Data.Feature = (val) => val;
+
+// LatLngBounds
+class LatLngBounds extends Array {
+  ne = 0;
+  sw = 0;
+  constructor(ne, sw) {
+    super();
+    this.ne = ne || this.ne;
+    this.sw = sw || this.sw;
+    return this;
+  }
+  getNorthEast = () => this.ne;
+  getSouthWest = () => this.sw;
+  extend = (val) => {
+    this.push(val);
+  };
+}
+
+google.maps.LatLngBounds = LatLngBounds;
+
+export default google;
