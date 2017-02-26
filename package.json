@@ -13,7 +13,7 @@
     "test:watch": "jest --watch",
     "test:cover": "jest --coverage",
     "build": "babel src --loose --ignore '/__tests__/' --out-dir lib",
-    "watch": "babel src --watch --out-dir lib"
+    "watch": "babel src --watch --ignore '/__tests__/' --out-dir lib"
   },
   "dependencies": {
     "lodash": "^4.17.4",
@@ -58,12 +58,13 @@
     ],
     "testRegex": ".*\\.test\\.(js|jsx)$",
     "collectCoverageFrom": [
-      "**/src/**/*.{js,jsx}",
+      "!**/demo/**",
       "!**/node_modules/**",
       "!**/__tests__/**",
       "!**/__snapshots__/**",
       "!**/__mocks__/**",
-      "!**/__stubs__/**"
+      "!**/__stubs__/**",
+      "**/src/**/*.{js,jsx}"
     ],
     "setupFiles": [
       "./testing/setup.js"
