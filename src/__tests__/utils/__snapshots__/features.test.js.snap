@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils/features matches snap shot for events constant 1`] = `
+Object {
+  "click": "click",
+  "mouseOut": "mouseout",
+  "mouseOver": "mouseover",
+}
+`;

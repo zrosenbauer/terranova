@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Outer matches snapshot 1`] = `
+<div
+  className="terra-outer"
+  style={
+    Object {
+      "height": "100px",
+      "position": "relative",
+      "width": "100px",
+    }
+  }
+>
+  <Terra/Inner
+    featureTypes={Object {}}
+    features={Array []}
+    id="id"
+    options={
+      Object {
+        "center": Object {
+          "lat": 41.8781,
+          "lng": -87.6298,
+        },
+        "zoom": 13,
+      }
+    }
+    setStyles={Array []}
+  />
+</div>
+`;
