@@ -42,6 +42,9 @@ const google = {
           clear: () => {
             features = [];
           },
+          remove: (feature) => {
+            features = features.filter((feat) => feat.id === feature.id)
+          },
           add: (feature) => {
             features.push(feature);
           },
@@ -51,7 +54,9 @@ const google = {
               setStyle(val);
             });
           },
-          getFeatureById: (val) => val,
+          getFeatureById: (id) => {
+            return features.find((feat) => feat.id === id) || null;
+          },
         },
         map: {},
         typeChecker: 'Map',

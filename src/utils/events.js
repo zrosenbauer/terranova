@@ -1,3 +1,5 @@
+/* @flow */
+
 import maps from '../google/maps';
 import { getMapById } from './terra';
 
@@ -16,7 +18,7 @@ import { getMapById } from './terra';
  * @param {String} type
  * @returns {String}
  */
-export function getEventNamespace(mapId, eventType, type) {
+export function getEventNamespace(mapId: string, eventType: string, type: string): string {
   return `${mapId}.${eventType}.${type}`;
 }
 
@@ -24,7 +26,7 @@ export function getEventNamespace(mapId, eventType, type) {
  * Proxy to getEventNamespace
  * @returns {String}
  */
-export function ens(...args) {
+export function ens(...args: Array<any>): string {
   return getEventNamespace(...args);
 }
 
@@ -36,7 +38,7 @@ export function ens(...args) {
  * @returns {void}
  * @private
  */
-export function dispatchMapEvent(mapId, eventName, feature) {
+export function dispatchMapEvent(mapId: string, eventName: string, feature: Object): void {
   maps.event.trigger(getMapById(mapId), eventName, feature);
 }
 
@@ -45,7 +47,7 @@ export function dispatchMapEvent(mapId, eventName, feature) {
  * @returns {void}
  * @private
  */
-export function dispatch(...args) {
+export function dispatch(...args: Array<any>): void {
   dispatchMapEvent(...args);
 }
 

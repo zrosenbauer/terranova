@@ -1,3 +1,5 @@
+/* @flow */
+
 import Point from '../google/maps/Point';
 
 // Calculations Module
@@ -17,7 +19,7 @@ import Point from '../google/maps/Point';
  * @returns {[Number,Number]}
  * @private
  */
-function calculatePointWithScale(point, bounds, scale) {
+function calculatePointWithScale(point: Point, bounds: Object, scale: number): Array<number> {
   return [(point.x - bounds.bl.x) * scale, (point.y - bounds.tr.y) * scale];
 }
 
@@ -28,7 +30,7 @@ function calculatePointWithScale(point, bounds, scale) {
  * @param {window.google.maps.LatLng} latLng
  * @returns {window.google.maps.Point}
  */
-export function latLngToPixel(map, latLng) {
+export function latLngToPixel(map: Object, latLng: Object): Point {
   const projection = map.getProjection();
   const bounds = map.getBounds();
   const scale = Math.pow(2, map.getZoom());
