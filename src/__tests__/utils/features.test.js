@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import {
   destroyTerra,
   createTerra,
   getDataById,
 } from '../../utils/terra';
-import {
+import Feature, {
   FEATURE_EVENTS,
   getFeatureByMapId,
   getFeatureTypeByName,
@@ -34,6 +35,7 @@ describe('utils/features', () => {
     id: fakeFeatureId,
     setProperty: jest.fn((key, obj) => obj),
     getProperty: jest.fn((val) => val),
+    getId: () => fakeFeatureId,
   };
 
   // Generate fake features
@@ -82,6 +84,69 @@ describe('utils/features', () => {
 
   // only calls remove on features with id not found
   // only calls add for features without id present
+  // on addition transforms to Point and Poly respectively
+
+  describe('updateFeatures', () => {
+    const latLng = {
+      lat: 44.2433,
+      lng: 88.2243,
+    };
+    const newFeature = {
+      type: 'foo',
+      id: 'new-one',
+      geometry: latLng,
+    };
+
+    it('removes features if not in the nextFeatures', () => {
+      updateFeatures(id, []);
+      const data = getDataById(id);
+      expect(data.remove).toBeCalled();
+      expect(getFeatureByMapId(id, fakeFeatureId)).toBe(null);
+      expect(data.getFeatures().length).toBe(0);
+    });
+
+    it('will not remove if still in nextFeatures & not add if same feature', () => {
+      updateFeatures(id, [getFakeFeature()]);
+      const data = getDataById(id);
+      expect(data.remove).not.toBeCalled();
+      expect(data.getFeatures().length).toBe(1);
+    });
+
+    it('will add feature as LatLng', () => {
+      updateFeatures(id, [newFeature]);
+      const data = getDataById(id);
+      expect(data.add).toBeCalledWith({
+        ..._.omit(newFeature, 'type'),
+        properties: {
+          [Feature.typeKey]: newFeature.type,
+          [Feature.stateKey]: {},
+        }
+      });
+    });
+
+    it('will add feature as polygon', () => {
+      const poly = [
+        latLng,
+        latLng,
+        latLng,
+      ];
+      updateFeatures(id, [
+        {
+          ...newFeature,
+          geometry: poly,
+        }
+      ]);
+      const data = getDataById(id);
+      expect(data.getFeatureById(newFeature.id)).toEqual({
+        ..._.omit(newFeature, 'type'),
+        geometry: [poly],
+        properties: {
+          [Feature.typeKey]: newFeature.type,
+          [Feature.stateKey]: {},
+        }
+      });
+    });
+  });
 
   describe('getFeatureTypesByMapId', () => {
     it('returns null if no map', () => {
