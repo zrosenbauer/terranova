@@ -1,3 +1,6 @@
+// @todo clean this up
+// this thing is a mess....please clean up!
+
 export const setStyle = jest.fn();
 
 const google = {
@@ -42,16 +45,24 @@ const google = {
           clear: () => {
             features = [];
           },
-          add: (feature) => {
+          remove: jest.fn((feature) => {
+            features = features.filter((feat) => feat.id !== feature.id);
+          }),
+          add: jest.fn((feature) => {
             features.push(feature);
+          }),
+          forEach: (cb) => {
+            features.forEach(cb);
           },
-          setStyle: (cb) => {
+          setStyle: jest.fn((cb) => {
             features.forEach((item) => {
               const val = cb(item);
               setStyle(val);
             });
-          },
-          getFeatureById: (val) => val,
+          }),
+          getFeatureById: jest.fn((id) => {
+            return features.find((feat) => feat.id === id) || null;
+          }),
         },
         map: {},
         typeChecker: 'Map',
@@ -104,6 +115,14 @@ const google = {
     }
   }
 };
+
+class Polygon extends Array {
+  constructor(arr) {
+    super(arr);
+  }
+};
+
+google.maps.Data.Polygon = Polygon;
 
 // Add Feature
 google.maps.Data.Feature = (val) => val;

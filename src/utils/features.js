@@ -120,7 +120,7 @@ export function getFeatureTypeByName(featuresTypes: ?Object, name: string): ?Obj
  * @param {String} featureId
  * @returns {Data.Feature}
  */
-export function getFeatureByMapId(mapId: String, featureId: String): ?Object {
+export function getFeatureByMapId(mapId: string, featureId: string): ?Object {
   if (!terraExists(mapId)) {
     return null;
   }
@@ -216,7 +216,7 @@ export function updateFeatures(mapId: string, nextFeatures: Array<Object> = []):
 
   // Check if existing features need to be removed
   // and removes them, will skip those that exist in the incoming features
-  if (data && data.length) {
+  if (data) {
     data.forEach((feature) => {
       if (!find(nextFeatures, { id: feature.getId() })) {
         data.remove(feature);
@@ -225,12 +225,13 @@ export function updateFeatures(mapId: string, nextFeatures: Array<Object> = []):
   }
 
   // Add new features, only those that need to be updated will be
-  forEach(nextFeatures, (feature) => {
-    if (data.getFeatureById(feature.id)) {
-      return;
-    }
-    data.add(transformToValidFeature(feature, mapId));
-  });
+  if (nextFeatures && nextFeatures.length) {
+    forEach(nextFeatures, (feature) => {
+      if (!data.getFeatureById(feature.id)) {
+        data.add(transformToValidFeature(feature, mapId));
+      }
+    });
+  }
 }
 
 /**

@@ -1,3 +1,5 @@
+/* @flow */
+
 /*
   .---. .----..----. .----.   .--.  .-. .-. .----. .-. .-.  .--.
  {_   _}| {_  | {}  }| {}  } / {} \ |  `| |/  {}  \| | | | / {} \
@@ -75,7 +77,7 @@ const terra = {};
  * @param {String} id
  * @returns {Boolean}
  */
-export function terraExists(id) {
+export function terraExists(id: string): boolean {
   return Boolean(terra[id]);
 }
 
@@ -86,9 +88,9 @@ export function terraExists(id) {
  * @param {String} id
  * @returns {Maps|null}
  */
-export function getTerraById(id) {
+export function getTerraById(id: string): Object {
   if (!terraExists(id)) {
-    return null;
+    return {};
   }
 
   return terra[id];
@@ -98,9 +100,9 @@ export function getTerraById(id) {
  * @param {String} id
  * @returns {Maps|null}
  */
-export function getMapById(id) {
+export function getMapById(id: string): Object {
   if (!terraExists(id)) {
-    return null;
+    return {};
   }
 
   return terra[id].map;
@@ -110,9 +112,9 @@ export function getMapById(id) {
  * @param {String} id
  * @returns {Data|null}
  */
-export function getDataById(id) {
+export function getDataById(id: string): Object {
   if (!terraExists(id)) {
-    return null;
+    return {};
   }
 
   return terra[id].map.data;
@@ -129,7 +131,7 @@ export function getDataById(id) {
  * @param {Object} featureTypes
  * @param {Array<Function>} stylesModifiers
  */
-export function createTerra(id, options = {}, featureTypes = {}, stylesModifiers = []) {
+export function createTerra(id: string, options: Object = {}, featureTypes: Object = {}, stylesModifiers: Array<Function> = []): void {
   if (terra[id]) {
     throw new Error(`Map with id of ${id}, already exists!`);
   }
@@ -151,7 +153,7 @@ export function createTerra(id, options = {}, featureTypes = {}, stylesModifiers
  * in our terra object.
  * @param {String} id
  */
-export function destroyTerra(id) {
+export function destroyTerra(id: string): void {
   if (terra[id]) {
     terra[id] = null;
   }

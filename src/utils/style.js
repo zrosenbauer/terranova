@@ -1,4 +1,5 @@
-import forEach from 'lodash/forEach';
+/* @flow */
+
 import findIndex from 'lodash/findIndex';
 import pullAt from 'lodash/pullAt';
 
@@ -28,8 +29,13 @@ import {
  * @returns {Number}
  * @private
  */
-function getSetStyleIndex(mapId, setStyle) {
-  return findIndex(getTerraById(mapId).stylesModifiers, (cb) => cb === setStyle);
+function getSetStyleIndex(mapId: string, setStyle: Function): number {
+  const terra = getTerraById(mapId);
+  if (terra) {
+    return findIndex(getTerraById(mapId).stylesModifiers, (cb) => cb === setStyle);
+  }
+
+  return -1;
 }
 
 /**
@@ -37,7 +43,7 @@ function getSetStyleIndex(mapId, setStyle) {
  * @param {String} mapId
  * @returns {Array<Function>}
  */
-export function getStylesModifiers(mapId) {
+export function getStylesModifiers(mapId: string): Array<Function> {
   if (!terraExists(mapId)) {
     return [];
   }
@@ -50,8 +56,9 @@ export function getStylesModifiers(mapId) {
  * override default type based styling
  * @param {String} mapId
  * @param {Function} setStyle
+ * @returns {void}
  */
-export function addStylesModifier(mapId, setStyle) {
+export function addStylesModifier(mapId: string, setStyle: Function): void {
   if (terraExists(mapId)) {
     const index = getSetStyleIndex(mapId, setStyle);
 
@@ -66,8 +73,9 @@ export function addStylesModifier(mapId, setStyle) {
  * not be able to do a value compare and remove!
  * @param {String} mapId
  * @param {Function} setStyle
+ * @returns {void}
  */
-export function removeStylesModifier(mapId, setStyle) {
+export function removeStylesModifier(mapId: string, setStyle: Function): void {
   if (terraExists(mapId)) {
     const index = getSetStyleIndex(mapId, setStyle);
 
@@ -82,7 +90,7 @@ export function removeStylesModifier(mapId, setStyle) {
  * @param {String} mapId
  * @returns {void}
  */
-export function clearStylesModifiers(mapId) {
+export function clearStylesModifiers(mapId: string): void {
   if (terraExists(mapId)) {
     getTerraById(mapId).stylesModifiers = [];
   }
@@ -93,7 +101,7 @@ export function clearStylesModifiers(mapId) {
  * @returns {void}
  * @private
  */
-export function addStyles(mapId) {
+export function addStyles(mapId: string): void {
   const featureTypes = getFeatureTypesByMapId(mapId);
 
   getDataById(mapId).setStyle((feature) => {
