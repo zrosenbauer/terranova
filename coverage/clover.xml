@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1488142796060" clover="3.2.0">
-  <project timestamp="1488142796060" name="All files">
-    <metrics statements="198" coveredstatements="165" conditionals="126" coveredconditionals="98" methods="55" coveredmethods="43" elements="379" coveredelements="306" complexity="0" loc="198" ncloc="198" packages="3" files="16" classes="16">
+<coverage generated="1488143271735" clover="3.2.0">
+  <project timestamp="1488143271735" name="All files">
+    <metrics statements="198" coveredstatements="166" conditionals="126" coveredconditionals="100" methods="55" coveredmethods="43" elements="379" coveredelements="309" complexity="0" loc="198" ncloc="198" packages="3" files="16" classes="16">
       <package name="src">
         <metrics statements="43" coveredstatements="39" conditionals="12" coveredconditionals="11" methods="10" coveredmethods="8"/>
         <file name="InfoWindow.jsx" path="/Users/zacrosenbauer/PhpstormProjects/MyProjects/terranova/src/InfoWindow.jsx">
@@ -112,7 +112,7 @@
         </file>
       </package>
       <package name="src.utils">
-        <metrics statements="125" coveredstatements="108" conditionals="89" coveredconditionals="68" methods="40" coveredmethods="35"/>
+        <metrics statements="125" coveredstatements="109" conditionals="89" coveredconditionals="70" methods="40" coveredmethods="35"/>
         <file name="calculations.js" path="/Users/zacrosenbauer/PhpstormProjects/MyProjects/terranova/src/utils/calculations.js">
           <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
           <line num="23" count="1" type="stmt"/>
@@ -131,21 +131,21 @@
           <line num="51" count="1" type="stmt"/>
         </file>
         <file name="features.js" path="/Users/zacrosenbauer/PhpstormProjects/MyProjects/terranova/src/utils/features.js">
-          <metrics statements="60" coveredstatements="44" conditionals="50" coveredconditionals="34" methods="18" coveredmethods="13"/>
+          <metrics statements="60" coveredstatements="45" conditionals="50" coveredconditionals="36" methods="18" coveredmethods="13"/>
           <line num="40" count="6" type="stmt"/>
           <line num="46" count="6" type="stmt"/>
           <line num="52" count="6" type="stmt"/>
-          <line num="67" count="1" type="stmt"/>
-          <line num="68" count="1" type="stmt"/>
-          <line num="70" count="1" type="stmt"/>
-          <line num="71" count="0" type="stmt"/>
+          <line num="67" count="2" type="stmt"/>
+          <line num="68" count="2" type="stmt"/>
+          <line num="70" count="2" type="stmt"/>
+          <line num="71" count="1" type="stmt"/>
           <line num="82" count="1" type="stmt"/>
-          <line num="98" count="5" type="stmt"/>
+          <line num="98" count="6" type="stmt"/>
           <line num="99" count="1" type="stmt"/>
-          <line num="102" count="4" type="stmt"/>
-          <line num="111" count="5" type="stmt"/>
+          <line num="102" count="5" type="stmt"/>
+          <line num="111" count="6" type="stmt"/>
           <line num="112" count="0" type="stmt"/>
-          <line num="115" count="5" type="stmt"/>
+          <line num="115" count="6" type="stmt"/>
           <line num="124" count="3" type="stmt"/>
           <line num="125" count="1" type="stmt"/>
           <line num="128" count="2" type="stmt"/>
@@ -166,15 +166,15 @@
           <line num="191" count="5" type="stmt"/>
           <line num="201" count="2" type="stmt"/>
           <line num="202" count="1" type="stmt"/>
-          <line num="215" count="4" type="stmt"/>
-          <line num="219" count="4" type="stmt"/>
-          <line num="220" count="3" type="stmt"/>
-          <line num="221" count="3" type="stmt"/>
-          <line num="222" count="2" type="stmt"/>
-          <line num="228" count="4" type="stmt"/>
-          <line num="229" count="2" type="stmt"/>
-          <line num="230" count="2" type="stmt"/>
-          <line num="231" count="1" type="stmt"/>
+          <line num="215" count="5" type="stmt"/>
+          <line num="219" count="5" type="stmt"/>
+          <line num="220" count="4" type="stmt"/>
+          <line num="221" count="4" type="stmt"/>
+          <line num="222" count="3" type="stmt"/>
+          <line num="228" count="5" type="stmt"/>
+          <line num="229" count="3" type="stmt"/>
+          <line num="230" count="3" type="stmt"/>
+          <line num="231" count="2" type="stmt"/>
           <line num="244" count="0" type="stmt"/>
           <line num="245" count="0" type="stmt"/>
           <line num="246" count="0" type="stmt"/>
@@ -237,24 +237,24 @@
           <metrics statements="20" coveredstatements="20" conditionals="15" coveredconditionals="14" methods="6" coveredmethods="6"/>
           <line num="48" count="9" type="stmt"/>
           <line num="68" count="9" type="stmt"/>
-          <line num="79" count="102" type="stmt"/>
-          <line num="90" count="25" type="stmt"/>
+          <line num="79" count="107" type="stmt"/>
+          <line num="90" count="26" type="stmt"/>
           <line num="91" count="3" type="stmt"/>
-          <line num="94" count="22" type="stmt"/>
+          <line num="94" count="23" type="stmt"/>
           <line num="102" count="5" type="stmt"/>
           <line num="103" count="3" type="stmt"/>
           <line num="106" count="2" type="stmt"/>
-          <line num="114" count="45" type="stmt"/>
+          <line num="114" count="48" type="stmt"/>
           <line num="115" count="2" type="stmt"/>
-          <line num="118" count="43" type="stmt"/>
-          <line num="133" count="44" type="stmt"/>
+          <line num="118" count="46" type="stmt"/>
+          <line num="133" count="45" type="stmt"/>
           <line num="134" count="1" type="stmt"/>
-          <line num="137" count="43" type="stmt"/>
-          <line num="139" count="43" type="stmt"/>
-          <line num="140" count="43" type="stmt"/>
-          <line num="145" count="43" type="stmt"/>
-          <line num="155" count="44" type="stmt"/>
-          <line num="156" count="43" type="stmt"/>
+          <line num="137" count="44" type="stmt"/>
+          <line num="139" count="44" type="stmt"/>
+          <line num="140" count="44" type="stmt"/>
+          <line num="145" count="44" type="stmt"/>
+          <line num="155" count="45" type="stmt"/>
+          <line num="156" count="44" type="stmt"/>
         </file>
       </package>
     </metrics>
